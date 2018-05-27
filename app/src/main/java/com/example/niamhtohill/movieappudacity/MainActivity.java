@@ -8,6 +8,7 @@ import android.content.Loader;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,6 +34,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public MovieAdapter movieAdapter;
     public TextView noInternet;
     public View loadingBar;
+    private List<VideoObject> videos = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +65,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 String movieImage = currentMovie.getMoviePosterUrl();
                 String movieSynopsis = currentMovie.getMovieSynopsis();
                 String movieVote = currentMovie.getMovieVoteAverage().toString();
+                String movieID = currentMovie.getMovieID().toString();
+
+                String movieRuntime = currentMovie.getMovieRunTime();
 
                 Intent intent = new Intent(MainActivity.this,MovieDetails.class);
                 Bundle bundle = new Bundle();
@@ -70,11 +76,19 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 bundle.putString("movieSynop",movieSynopsis);
                 bundle.putString("movieImage",movieImage);
                 bundle.putString("movieVote",movieVote);
+                bundle.putString("movieID", movieID);
+                bundle.putString("movieRuntime",movieRuntime);
+                System.out.println("MOVIE ID **************" + movieID);
+                new VideoLoader(MainActivity.this, currentMovie.getMovieID().toString()).execute();
+
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
         });
+    }
 
+    public void setVideoList(List<VideoObject> videos){
+        this.videos = videos;
     }
 
     @Override
@@ -86,7 +100,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
         if(id == R.id.action_button){
             final String popular = "Most Popular";
             final String rated = "Highest Rated";

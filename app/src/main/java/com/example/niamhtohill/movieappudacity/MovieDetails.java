@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -25,6 +26,8 @@ public class MovieDetails extends AppCompatActivity{
     TextView movieSynop;
     TextView movieVote;
     ImageView movieImage;
+    TextView movieRuntime;
+    TableLayout videoTable;
 
     public static String month ="";
     public static String day ="";
@@ -41,6 +44,8 @@ public class MovieDetails extends AppCompatActivity{
         movieRelease = findViewById(R.id.movie_release_tv);
         movieSynop = findViewById(R.id.movie_synop);
         movieVote = findViewById(R.id.movie_vote);
+        movieRuntime = findViewById(R.id.movie_duration_tv);
+        videoTable = findViewById(R.id.table_layout);
 
         Bundle bundle = getIntent().getExtras();
         if(bundle != null){
@@ -49,26 +54,26 @@ public class MovieDetails extends AppCompatActivity{
             String movieReleaseStr = bundle.getString("movieRelease");
             String movieSynopsisStr = bundle.getString("movieSynop");
             String movieVoteStr = bundle.getString("movieVote");
-
+            String movieId = bundle.getString("movieID");
+            String movieRuntimeStr =bundle.getString("movieRuntime");
             movieVoteStr = movieVoteStr + "/10";
-            //TODO need to format date
             SimpleDateFormat jsonFormat = new SimpleDateFormat("yyyy-mm-dd");
-            SimpleDateFormat desiredFormat = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat desiredFormat = new SimpleDateFormat("yyyy");
             String reformatted = "";
             try{
                 reformatted = desiredFormat.format((jsonFormat.parse(movieReleaseStr)));
             }catch (ParseException e){
                 Log.e("PARSE ERROR", e.getMessage());
             }
-
-
             movieTitle.setText(movieTitleStr);
             movieRelease.setText(reformatted);
             movieSynop.setText(movieSynopsisStr);
             movieVote.setText(movieVoteStr);
+            movieRuntime.setText(movieRuntimeStr + " mins");
             String link = "http://image.tmdb.org/t/p/w185";
             link = link + movieImageStr;
             Picasso.with(this).load(link).into(movieImage);
+
         }
     }
 }

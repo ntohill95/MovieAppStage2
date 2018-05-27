@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TableRow
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="80dp">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:src="@drawable/play_button"
+        android:id="@+id/playbutton"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:layout_gravity="center"
+        android:id="@+id/trailer_name_tv"
+        android:text = "Trailer Name"
+        />
+    </LinearLayout>
+</TableRow>
