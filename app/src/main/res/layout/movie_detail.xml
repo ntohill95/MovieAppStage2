@@ -3,6 +3,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/palePurple"
     android:orientation="vertical">
 
@@ -31,7 +32,10 @@
                 android:textSize="30sp" />
         </FrameLayout>
 
-        <LinearLayout
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:orientation="horizontal">
@@ -39,49 +43,115 @@
             <ImageView
                 android:id="@+id/movie_image"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="190dp"
                 android:layout_weight="1"
-                android:scaleType="fitCenter" />
+                android:layout_margin="10dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/star"/>
             <!-- Remove hard coded image height  -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/movie_release_tv"
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="30sp"
-                    android:textColor="@color/darkDeepBlue"
-                    android:textStyle="bold"
-                    android:padding="5dp"
-                    android:text="2018"/>
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/calendar"/>
+                    <TextView
+                        android:id="@+id/movie_release_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:layout_gravity="center"
+                        android:textColor="@color/darkDeepBlue"
+                        android:padding="5dp"
+                        android:text="2018"/>
+                </LinearLayout>
 
-                <TextView
-                    android:id="@+id/movie_duration_tv"
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="20sp"
-                    android:padding="5dp"
-                    android:textColor="@color/darkDeepBlue"
-                    android:text="120mins"/>
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/time" />
+                    <TextView
+                        android:id="@+id/movie_duration_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:padding="5dp"
+                        android:layout_gravity="center"
+                        android:textColor="@color/darkDeepBlue"
+                        android:text="120mins"/>
+                </LinearLayout>
 
-                <TextView
-                    android:id="@+id/movie_vote"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="15sp"
-                    android:padding="5dp"
-                    android:text="8.1/10" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/star"/>
+                    <TextView
+                        android:id="@+id/movie_vote"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:layout_gravity="center"
+                        android:textColor="@color/darkDeepBlue"
+                        android:padding="5dp"
+                        android:text="8.1/10" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/review"/>
+                    <TextView
+                        android:id="@+id/movie_review"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:layout_gravity="center"
+                        android:textColor="@color/darkDeepBlue"
+                        android:padding="5dp"
+                        android:text="Reviews" />
+
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/favourite_fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:fabSize="mini"
+                app:elevation="4dp"
+                android:layout_gravity="end|bottom"
+                android:layout_margin="10dp"
+                android:src="@drawable/heart"
+                />
+        </FrameLayout>
         <TextView
             style="@style/MovieDetailHeadings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:text="@string/movie_synopsis" />
 
         <TextView
@@ -100,3 +170,4 @@
 
     </LinearLayout>
 </ScrollView>
+

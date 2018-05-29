@@ -23,7 +23,6 @@ public class VideoLoader extends AsyncTask<String, Void, List<VideoObject>> {
             return null;
         }
         videos = QueryUtils.getTrailerVideos(movieId);
-
         return videos;
     }
 

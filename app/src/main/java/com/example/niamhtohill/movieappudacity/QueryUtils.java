@@ -205,7 +205,6 @@ public final class QueryUtils {
                                 String videoType = videoObject.getString("type");
                                 //videoObjectHashMap.put(movieID,new VideoObject(videoID, videoTitle, videoKey, videoSite, videoType));
                                 videos.add(new VideoObject(videoID, videoTitle, videoKey, videoSite, videoType));
-                                System.out.println("************videos found");
                             }
                         }
                     }
@@ -226,6 +225,59 @@ public final class QueryUtils {
             Log.e("ERROR = ", e.getMessage());
         }
         return videos;
+    }
 
+    public static List<ReviewObject> getVideoReview(String movieID){
+        String movieBaseLink = "https://api.themoviedb.org/3/movie/";
+        String API_KEY = "/reviews?api_key=1119711545cd4fbc29520df875c8d677&language=en-US";
+        String totalApiURL = movieBaseLink + movieID + API_KEY;
+        URL url = buildUrl(totalApiURL);
+        String videoJsonStr = null;
+        List<ReviewObject> reviews = new ArrayList<>();
+        try{
+            HttpURLConnection urlConnection = null;
+            InputStream in = null;
+            try{
+                urlConnection = (HttpURLConnection)url.openConnection();
+                urlConnection.setRequestMethod("GET");
+                urlConnection.connect();
+                int responseCode = urlConnection.getResponseCode();
+                if(responseCode==200){
+                    in = urlConnection.getInputStream();
+                    videoJsonStr = readFromStream(in);
+                }else{
+                    Log.e("ERROR RESPONSE CODE = ", "Response Code: " +responseCode);
+                }
+                //getting reviews related to movieObject
+                try {
+                    JSONObject jsonObject2 = new JSONObject(videoJsonStr);
+                    if (jsonObject2.has("results")) {
+                        JSONArray jsonArray = jsonObject2.getJSONArray("results");
+                        if (jsonArray.length() > 0) {
+                            for (int j = 0; j < jsonArray.length(); j++) {
+                                JSONObject reviewObject = jsonArray.getJSONObject(j);
+                                String reviewAuthor = reviewObject.getString("author");
+                                String reviewContent = reviewObject.getString("content");
+                                reviews.add(new ReviewObject(reviewAuthor,reviewContent));
+                            }
+                        }
+                    }
+                }catch (JSONException e){
+                    Log.e("VIDEO JSON ERROR", e.getMessage());
+                }
+            }catch (IOException e){
+                Log.e("ERROR : ",e.getMessage());
+            }finally {
+                if(urlConnection!=null){
+                    urlConnection.disconnect();
+                }
+                if(in !=null){
+                    in.close();
+                }
+            }
+        }catch (IOException e){
+            Log.e("ERROR = ", e.getMessage());
+        }
+        return reviews;
     }
 }

@@ -4,8 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,7 +32,7 @@ import java.util.List;
  * Created by niamhtohill on 24/05/2018.
  */
 
-public class MovieDetails extends AppCompatActivity{
+public class MovieDetails extends AppCompatActivity {
     TextView movieTitle;
     TextView movieRelease;
     TextView movieSynop;
@@ -37,15 +40,11 @@ public class MovieDetails extends AppCompatActivity{
     ImageView movieImage;
     TextView movieRuntime;
     TableLayout videoTable;
-    TableRow videoTableRow;
-    TextView trailerTextView;
+    FloatingActionButton favouriteFab;
+    TextView reviewsTv;
 
-    //public HashMap<String, List<VideoObject>> videos = new HashMap<>();
+
     public List<VideoObject> videos = new ArrayList<>();
-
-    public static String month ="";
-    public static String day ="";
-    public static String year ="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -53,23 +52,23 @@ public class MovieDetails extends AppCompatActivity{
         setContentView(R.layout.movie_detail);
         setTitle(R.string.movie_details);
 
-
         movieTitle = findViewById(R.id.movie_title_tv);
         movieImage = findViewById(R.id.movie_image);
         movieRelease = findViewById(R.id.movie_release_tv);
         movieSynop = findViewById(R.id.movie_synop);
         movieVote = findViewById(R.id.movie_vote);
         movieRuntime = findViewById(R.id.movie_duration_tv);
-        //videoTable = findViewById(R.id.table_layout);
+        favouriteFab = findViewById(R.id.favourite_fab);
+        reviewsTv = findViewById(R.id.movie_review);
 
-        Bundle bundle = getIntent().getExtras();
+        final Bundle bundle = getIntent().getExtras();
         if(bundle != null){
             String movieTitleStr = bundle.getString("movieTitle");
             String movieImageStr = bundle.getString("movieImage");
             String movieReleaseStr = bundle.getString("movieRelease");
             String movieSynopsisStr = bundle.getString("movieSynop");
             String movieVoteStr = bundle.getString("movieVote");
-            String movieId = bundle.getString("movieID");
+            final String movieId = bundle.getString("movieID");
             String movieRuntimeStr =bundle.getString("movieRuntime");
             movieVoteStr = movieVoteStr + "/10";
             SimpleDateFormat jsonFormat = new SimpleDateFormat("yyyy-mm-dd");
@@ -80,10 +79,7 @@ public class MovieDetails extends AppCompatActivity{
             }catch (ParseException e){
                 Log.e("PARSE ERROR", e.getMessage());
             }
-
             new VideoLoader(MovieDetails.this, movieId).execute();
-
-            System.out.println("*******HOW MANY VIDEOS" + videos.size());
 
             movieTitle.setText(movieTitleStr);
             movieRelease.setText(reformatted);
@@ -94,27 +90,42 @@ public class MovieDetails extends AppCompatActivity{
             link = link + movieImageStr;
             Picasso.with(this).load(link).into(movieImage);
 
+            //if user taps review textView
+            reviewsTv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MovieDetails.this, ReviewActivity.class);
+                    intent.putExtra("movieId", movieId);
+                    startActivity(intent);
+                }
+            });
+
+            favouriteFab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(favouriteFab.getDrawable().getConstantState() == getResources().getDrawable(R.drawable.heart).getConstantState()){
+                        favouriteFab.setImageResource(R.drawable.heart_full);
+                    }else {
+                        favouriteFab.setImageResource(R.drawable.heart);
+                    }
+
+                }
+            });
         }
     }
     public void setVideoList(List videos){
-        System.out.println("IN SET VIDEO LIST*******");
         this.videos = videos;
-        System.out.println("*******VIDEOS*********"+videos.size());
         displayVideoTable();
     }
 
     public void displayVideoTable(){
         videoTable = findViewById(R.id.table_layout);
-        //videoTableRow = findViewById(R.id.table_row);
-        //trailerTextView =findViewById(R.id.trailer_name_tv);
         for(int i=0 ; i < videos.size();i++) {
             View videoTableRow = LayoutInflater.from(this).inflate(R.layout.table_row, null, false);
             TextView trailerTextView = videoTableRow.findViewById(R.id.trailer_name_tv);
             final VideoObject videoObject = videos.get(i);
             trailerTextView.setText(videoObject.getVideoName());
             videoTable.addView(videoTableRow);
-            //videoTableRow = LayoutInflater.from(this, inflate(R.layout.table_row,getParent(),false));
-            //videoTable.addView(videoTableRow, new TableLayout.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
             videoTableRow.setClickable(true);
             videoTableRow.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -129,6 +140,4 @@ public class MovieDetails extends AppCompatActivity{
             });
         }
     }
-
-
 }
