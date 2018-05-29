@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private static final String MOVIES_URL_LINK = "https://api.themoviedb.org/3/movie/popular?api_key=";
     private static final String MOVIES_URL_RATED = "https://api.themoviedb.org/3/movie/top_rated?api_key=";
-    final static String API_KEY = "1119711545cd4fbc29520df875c8d677";
+    final static String API_KEY = "ENTER YOUR API KEY";
     public static  String MOVIES_URL_LINK_FINAL = MOVIES_URL_LINK+API_KEY;
 
     public static final int MOVIE_ID =1;
