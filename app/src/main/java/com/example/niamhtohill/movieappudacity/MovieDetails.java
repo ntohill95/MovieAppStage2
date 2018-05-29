@@ -89,7 +89,7 @@ public class MovieDetails extends AppCompatActivity {
             String link = "http://image.tmdb.org/t/p/w185";
             link = link + movieImageStr;
             Picasso.with(this).load(link).into(movieImage);
-
+            final Movie movie = new Movie(movieTitleStr,movieReleaseStr,movieSynopsisStr,Double.parseDouble(bundle.getString("movieVote")),movieImageStr,Integer.parseInt(movieId),movieRuntimeStr);
             //if user taps review textView
             reviewsTv.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -103,10 +103,14 @@ public class MovieDetails extends AppCompatActivity {
             favouriteFab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    //user has favourited movie
                     if(favouriteFab.getDrawable().getConstantState() == getResources().getDrawable(R.drawable.heart).getConstantState()){
                         favouriteFab.setImageResource(R.drawable.heart_full);
-                    }else {
+                        MoviesDbHelper.AddToFavourites(MovieDetails.this, movie);
+                    }//user un-favourites a movie
+                    else {
                         favouriteFab.setImageResource(R.drawable.heart);
+                        MoviesDbHelper.DeleteFromFavourites(MovieDetails.this, Integer.parseInt(movieId));
                     }
 
                 }
