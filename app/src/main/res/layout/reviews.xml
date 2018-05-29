@@ -1,24 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="match_parent">
-
-    <TextView
-        android:id="@+id/no_reviews_available"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:padding="10sp"
-        android:text="There are no Reviews available"/>
-
-    <TableLayout
-        android:id="@+id/reviews_table"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="invisible">
-    </TableLayout>
+        android:layout_height="match_parent">
 
+        <TextView
+            android:id="@+id/no_reviews_available"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="10sp"
+            android:text="There are no Reviews available"/>
 
-</LinearLayout>
+        <TableLayout
+            android:id="@+id/reviews_table"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible">
+        </TableLayout>
+    </FrameLayout>
+
+</ScrollView>
