@@ -3,16 +3,16 @@ package com.example.niamhtohill.movieappudacity;
 import android.app.Activity;
 import android.os.AsyncTask;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class VideoLoader extends AsyncTask<String, Void, List<VideoObject>> {
     String movieId;
 
-    public MainActivity activity;
-    public  List<VideoObject> videos = new ArrayList<>();
+    public MovieDetails activity;
+    public List<VideoObject> videos;
 
-    public VideoLoader(MainActivity activity, String movieId){
+    public VideoLoader(MovieDetails activity, String movieId){
         this.activity =activity;
         this.movieId=movieId;
     }
@@ -23,7 +23,7 @@ public class VideoLoader extends AsyncTask<String, Void, List<VideoObject>> {
             return null;
         }
         videos = QueryUtils.getTrailerVideos(movieId);
-        System.out.println("*******VIDEOS*********"+videos.size());
+
         return videos;
     }
 

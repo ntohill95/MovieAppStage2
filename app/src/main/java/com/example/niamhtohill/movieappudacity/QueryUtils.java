@@ -17,6 +17,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -173,6 +174,7 @@ public final class QueryUtils {
         URL url = buildUrl(totalApiURL);
         String videoJsonStr = null;
         List<VideoObject> videos = new ArrayList<>();
+        //HashMap<String, List<VideoObject>> videoObjectHashMap = new HashMap<>();
         try{
             HttpURLConnection urlConnection = null;
             InputStream in = null;
@@ -201,6 +203,7 @@ public final class QueryUtils {
                                 String videoTitle = videoObject.getString("name");
                                 String videoSite = videoObject.getString("site");
                                 String videoType = videoObject.getString("type");
+                                //videoObjectHashMap.put(movieID,new VideoObject(videoID, videoTitle, videoKey, videoSite, videoType));
                                 videos.add(new VideoObject(videoID, videoTitle, videoKey, videoSite, videoType));
                                 System.out.println("************videos found");
                             }

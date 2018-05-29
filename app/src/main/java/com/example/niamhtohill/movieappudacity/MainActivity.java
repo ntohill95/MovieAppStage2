@@ -9,6 +9,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +21,7 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Movie>> {
@@ -34,7 +36,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public MovieAdapter movieAdapter;
     public TextView noInternet;
     public View loadingBar;
-    private List<VideoObject> videos = new ArrayList<>();
+    public HashMap<String, List<VideoObject>> videos = new HashMap<>();
+    public List<VideoObject> videoObjects;
 
 
     @Override
@@ -69,7 +72,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
                 String movieRuntime = currentMovie.getMovieRunTime();
 
-                Intent intent = new Intent(MainActivity.this,MovieDetails.class);
+                videoObjects = videos.get(currentMovie.getMovieID());
+
+                Intent intent = new Intent(MainActivity.this, MovieDetails.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("movieTitle", movieTitle);
                 bundle.putString("movieRelease",movieRelease);
@@ -78,17 +83,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 bundle.putString("movieVote",movieVote);
                 bundle.putString("movieID", movieID);
                 bundle.putString("movieRuntime",movieRuntime);
-                System.out.println("MOVIE ID **************" + movieID);
-                new VideoLoader(MainActivity.this, currentMovie.getMovieID().toString()).execute();
 
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
         });
-    }
-
-    public void setVideoList(List<VideoObject> videos){
-        this.videos = videos;
     }
 
     @Override
@@ -172,7 +171,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public Loader<List<Movie>> onCreateLoader(int i, Bundle bundle) {
-        Log.e("MOVIE URL ***********", MOVIES_URL_LINK_FINAL);
         return new MovieLoader(this,MOVIES_URL_LINK_FINAL);
     }
 
