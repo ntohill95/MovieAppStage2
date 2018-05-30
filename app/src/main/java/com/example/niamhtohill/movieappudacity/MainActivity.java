@@ -12,12 +12,16 @@ import android.os.AsyncTask;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -28,11 +32,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private static final String MOVIES_URL_LINK = "https://api.themoviedb.org/3/movie/popular?api_key=";
     private static final String MOVIES_URL_RATED = "https://api.themoviedb.org/3/movie/top_rated?api_key=";
-    final static String API_KEY = "ENTER YOUR API KEY";
+    final static String API_KEY = "1119711545cd4fbc29520df875c8d677";
     public static  String MOVIES_URL_LINK_FINAL = MOVIES_URL_LINK+API_KEY;
 
     public static final int MOVIE_ID =1;
-    public GridView movieGrid;
+    public RecyclerView movieGrid;
     public MovieAdapter movieAdapter;
     public TextView noInternet;
     public View loadingBar;
@@ -58,36 +62,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }
         movieGrid = findViewById(R.id.grid);
         movieAdapter = new MovieAdapter(this, new ArrayList<Movie>());
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        movieGrid.setLayoutManager(layoutManager);
+        movieGrid.setItemAnimator(new DefaultItemAnimator());
         movieGrid.setAdapter(movieAdapter);
-        movieGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Movie currentMovie = movieAdapter.getItem(position);
-                String movieTitle = currentMovie.getMovieTitle();
-                String movieRelease = currentMovie.getMovieReleaseDate();
-                String movieImage = currentMovie.getMoviePosterUrl();
-                String movieSynopsis = currentMovie.getMovieSynopsis();
-                String movieVote = currentMovie.getMovieVoteAverage().toString();
-                String movieID = currentMovie.getMovieID().toString();
 
-                String movieRuntime = currentMovie.getMovieRunTime();
-
-                videoObjects = videos.get(currentMovie.getMovieID());
-
-                Intent intent = new Intent(MainActivity.this, MovieDetails.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("movieTitle", movieTitle);
-                bundle.putString("movieRelease",movieRelease);
-                bundle.putString("movieSynop",movieSynopsis);
-                bundle.putString("movieImage",movieImage);
-                bundle.putString("movieVote",movieVote);
-                bundle.putString("movieID", movieID);
-                bundle.putString("movieRuntime",movieRuntime);
-
-                intent.putExtras(bundle);
-                startActivity(intent);
-            }
-        });
     }
 
     @Override
@@ -99,11 +79,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+
         if(id == R.id.action_button){
             final String popular = "Most Popular";
             final String rated = "Highest Rated";
             final String cancel = "Cancel";
-            final String [] options = {popular,rated,cancel};
+            final String favourites = "Favourites";
+            final String [] options = {popular,rated,favourites,cancel};
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             builder.setItems(options, new DialogInterface.OnClickListener() {
                 @Override
@@ -124,7 +106,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                             loadingBar.setVisibility(View.GONE);
                             noInternet = findViewById(R.id.no_connection_tv);
                             noInternet.setVisibility(View.VISIBLE);
-                            movieAdapter.clear();
+                            //TODO checking if .removeAllViews() compensates for .clear() not working
+                            movieGrid.removeAllViews();
+                            //movieAdapter.clear();
                         }
                     }
                     //if the user selects "highest rated" from the menu
@@ -143,7 +127,20 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                             loadingBar.setVisibility(View.GONE);
                             noInternet = findViewById(R.id.no_connection_tv);
                             noInternet.setVisibility(View.VISIBLE);
-                            movieAdapter.clear();
+                            //TODO checking if .removeAllViews() compensates for .clear() not working
+                            movieGrid.removeAllViews();
+                            //movieAdapter.clear();
+                        }
+                    }
+                    //display favourite movies
+                    if(options[which]==favourites){
+                        List<Movie> movies = MoviesDbHelper.ShowFavouriteMovies(MainActivity.this);
+                        //TODO checking if .removeAllViews() compensates for .clear() not working
+                        movieGrid.removeAllViews();
+                        //movieAdapter.clear();
+                        if(movieAdapter != null){
+                            movieAdapter.addAll(movies);
+                            movieAdapter.notifyDataSetChanged();
                         }
                     }
                     //else if they hit cancel
@@ -176,7 +173,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onLoadFinished(Loader<List<Movie>> loader, List<Movie> movies) {
-        movieAdapter.clear();
+        //TODO checking if .removeAllViews() compensates for .clear() not working
+        movieGrid.removeAllViews();
+        //movieAdapter.clear();
         View loadingBar = findViewById(R.id.progressBar);
         loadingBar.setVisibility(View.GONE);
         if(movieAdapter != null){
@@ -187,6 +186,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onLoaderReset(Loader<List<Movie>> movies) {
-        movieAdapter.clear();
+        //TODO checking if .removeAllViews() compensates for .clear() not working
+        movieGrid.removeAllViews();
+        //movieAdapter.clear();
     }
 }

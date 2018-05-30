@@ -31,7 +31,7 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
                 MoviesContract.MoviesEntry.COLUMN_MOVIE_OVERVIEW + " TEXT, " +
                 MoviesContract.MoviesEntry.COLUMN_MOVIE_RATE + " INTEGER, "+
                 MoviesContract.MoviesEntry.COLUMN_RELEASE_DATE + " TEXT, " +
-                MoviesContract.MoviesEntry.COLUMN_RUNTIME + " TEXT);";
+                MoviesContract.MoviesEntry.COLUMN_RUNTIME + " TEXT );";
         db.execSQL(SQL_CREATE_MOVIE_TABLE);
     }
 
@@ -59,7 +59,7 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
                 MoviesContract.MoviesEntry.COLUMN_MOVIE_ID + " = ?", new String[]{Integer.toString(id)});
     }
 
-    public List<Movie> ShowFavouriteMovies (Context context){
+    public static List<Movie> ShowFavouriteMovies (Context context){
         Cursor cursor;
         try{
             cursor = context.getContentResolver().query(MoviesContract.MoviesEntry.CONTENT_URI, null,null,null,null);
@@ -102,5 +102,14 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
         }
         cursor.close();
         return movies;
+    }
+
+    public static boolean isMovieFavouited(Context context, Movie movie){
+        List<Movie> favouritedMovies = ShowFavouriteMovies(context);
+        if(favouritedMovies.contains(movie)){
+            return true;
+        }else {
+            return false;
+        }
     }
 }

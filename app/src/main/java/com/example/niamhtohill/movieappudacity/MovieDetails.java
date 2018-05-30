@@ -100,6 +100,11 @@ public class MovieDetails extends AppCompatActivity {
                 }
             });
 
+            boolean isFavourited = MoviesDbHelper.isMovieFavouited(this, movie);
+            if(isFavourited){
+                favouriteFab.setImageResource(R.drawable.heart_full);
+            }
+
             favouriteFab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
