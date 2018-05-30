@@ -60,13 +60,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             noInternet = findViewById(R.id.no_connection_tv);
             noInternet.setVisibility(View.VISIBLE);
         }
-        movieGrid = findViewById(R.id.grid);
+        movieGrid = findViewById(R.id.recycler_view);
         movieAdapter = new MovieAdapter(this, new ArrayList<Movie>());
-
+        movieGrid.setAdapter(movieAdapter);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         movieGrid.setLayoutManager(layoutManager);
         movieGrid.setItemAnimator(new DefaultItemAnimator());
-        movieGrid.setAdapter(movieAdapter);
+
 
     }
 
@@ -139,7 +139,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                         movieGrid.removeAllViews();
                         //movieAdapter.clear();
                         if(movieAdapter != null){
-                            movieAdapter.addAll(movies);
+                            movies.addAll(movies);
                             movieAdapter.notifyDataSetChanged();
                         }
                     }
@@ -179,7 +179,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         View loadingBar = findViewById(R.id.progressBar);
         loadingBar.setVisibility(View.GONE);
         if(movieAdapter != null){
-            movieAdapter.addAll(movies);
+            movies.addAll(movies);
+           // movieAdapter.addAll(movies);
             movieAdapter.notifyDataSetChanged();
         }
     }

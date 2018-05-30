@@ -33,14 +33,18 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
     public class MyViewHolder extends RecyclerView.ViewHolder{
         public ImageView movieImage;
 
+        private Context context;
+
         public MyViewHolder(View view){
             super(view);
             movieImage = view.findViewById(R.id.movie_grid_image);
+            context = view.getContext();
         }
     }
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View itemView = layoutInflater.from(parent.getContext()).inflate(R.layout.grid_item,parent,false);
         return new MyViewHolder(itemView);
     }
