@@ -69,7 +69,7 @@ public class MovieDetails extends AppCompatActivity {
             String movieSynopsisStr = bundle.getString("movieSynop");
             String movieVoteStr = bundle.getString("movieVote");
             final String movieId = bundle.getString("movieID");
-            String movieRuntimeStr =bundle.getString("movieRuntime");
+           // String movieRuntimeStr = QueryUtils.getRunTime(movieId);
             movieVoteStr = movieVoteStr + "/10";
             SimpleDateFormat jsonFormat = new SimpleDateFormat("yyyy-mm-dd");
             SimpleDateFormat desiredFormat = new SimpleDateFormat("yyyy");
@@ -85,11 +85,11 @@ public class MovieDetails extends AppCompatActivity {
             movieRelease.setText(reformatted);
             movieSynop.setText(movieSynopsisStr);
             movieVote.setText(movieVoteStr);
-            movieRuntime.setText(movieRuntimeStr + " mins");
+            //movieRuntime.setText(movieRuntimeStr + " mins");
             String link = "http://image.tmdb.org/t/p/w185";
             link = link + movieImageStr;
             Picasso.with(this).load(link).into(movieImage);
-            final Movie movie = new Movie(movieTitleStr,movieReleaseStr,movieSynopsisStr,Double.parseDouble(bundle.getString("movieVote")),movieImageStr,Integer.parseInt(movieId),movieRuntimeStr);
+            final Movie movie = new Movie(movieTitleStr,movieReleaseStr,movieSynopsisStr,Double.parseDouble(bundle.getString("movieVote")),movieImageStr,Integer.parseInt(movieId));
             //if user taps review textView
             reviewsTv.setOnClickListener(new View.OnClickListener() {
                 @Override

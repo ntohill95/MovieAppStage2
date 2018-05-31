@@ -2,6 +2,7 @@ package com.example.niamhtohill.movieappudacity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -46,11 +47,14 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View itemView = layoutInflater.from(parent.getContext()).inflate(R.layout.grid_item,parent,false);
-        return new MyViewHolder(itemView);
+        itemView.setFocusable(true);
+        MyViewHolder holder = new MyViewHolder(itemView);
+        return holder;
     }
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
+
         final Movie movie = movies.get(position);
         String imageUrl = movie.getMoviePosterUrl();
         //w185 recommended for most phones
@@ -66,7 +70,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
                 String movieSynopsis = movie.getMovieSynopsis();
                 String movieVote = movie.getMovieVoteAverage().toString();
                 String movieID = movie.getMovieID().toString();
-                String movieRuntime = movie.getMovieRunTime();
 
                 Intent intent = new Intent(context, MovieDetails.class);
                 Bundle bundle = new Bundle();
@@ -76,7 +79,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
                 bundle.putString("movieImage",movieImage);
                 bundle.putString("movieVote",movieVote);
                 bundle.putString("movieID", movieID);
-                bundle.putString("movieRuntime",movieRuntime);
 
                 intent.putExtras(bundle);
                 context.startActivity(intent);
@@ -86,6 +88,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
 
     @Override
     public int getItemCount() {
-        return 0;
+        return movies.size();
+    }
+
+    public void addAll(List<Movie> movieArrayList){
+        movies.clear();
+        movies.addAll(movieArrayList);
+        notifyDataSetChanged();
     }
 }

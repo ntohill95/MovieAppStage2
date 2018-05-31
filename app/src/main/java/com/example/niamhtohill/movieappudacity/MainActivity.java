@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public HashMap<String, List<VideoObject>> videos = new HashMap<>();
     public List<VideoObject> videoObjects;
 
+    private int position = RecyclerView.NO_POSITION;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,13 +62,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             noInternet.setVisibility(View.VISIBLE);
         }
         movieGrid = findViewById(R.id.recycler_view);
-        movieAdapter = new MovieAdapter(this, new ArrayList<Movie>());
-        movieGrid.setAdapter(movieAdapter);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         movieGrid.setLayoutManager(layoutManager);
-        movieGrid.setItemAnimator(new DefaultItemAnimator());
+        movieGrid.setHasFixedSize(true);
 
-
+        movieAdapter = new MovieAdapter(this, new ArrayList<Movie>());
+        movieGrid.setAdapter(movieAdapter);
     }
 
     @Override
@@ -175,12 +175,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public void onLoadFinished(Loader<List<Movie>> loader, List<Movie> movies) {
         //TODO checking if .removeAllViews() compensates for .clear() not working
         movieGrid.removeAllViews();
-        //movieAdapter.clear();
         View loadingBar = findViewById(R.id.progressBar);
         loadingBar.setVisibility(View.GONE);
+        if(position == RecyclerView.NO_POSITION ){
+            position=0;
+            movieGrid.smoothScrollToPosition(position);
+        }
         if(movieAdapter != null){
-            movies.addAll(movies);
-           // movieAdapter.addAll(movies);
+            movieAdapter.addAll(movies);
             movieAdapter.notifyDataSetChanged();
         }
     }

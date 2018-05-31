@@ -106,8 +106,8 @@ public final class QueryUtils {
                     Double movieAverage = movieObject.getDouble("vote_average");
                     Integer movieID = movieObject.getInt("id");
                     //determine runtime of movieObject
-                    String movieRuntime = getRunTime(movieID.toString());
-                    movies.add(new Movie(movieTitle,movieRelease,movieSynopsis,movieAverage,movieImageUrl,movieID,movieRuntime));
+                    //String movieRuntime = getRunTime(movieID.toString());
+                    movies.add(new Movie(movieTitle,movieRelease,movieSynopsis,movieAverage,movieImageUrl,movieID));
                 }
             }
         }catch (JSONException e){

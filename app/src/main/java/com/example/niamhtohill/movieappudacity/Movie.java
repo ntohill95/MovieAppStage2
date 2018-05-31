@@ -14,7 +14,7 @@ public class Movie {
     private Double movieVoteAverage;
     private String moviePosterUrl;
     private Integer movieID;
-    private String movieRunTime;
+    //private String movieRunTime;
 
     public Integer getMovieID() {
         return movieID;
@@ -24,24 +24,24 @@ public class Movie {
         this.movieID = movieID;
     }
 
-    public Movie(String movieTitle, String movieReleaseDate, String movieSynopsis, Double movieVoteAverage, String moviePosterUrl, Integer movieID, String movieRunTime) {
+    public Movie(String movieTitle, String movieReleaseDate, String movieSynopsis, Double movieVoteAverage, String moviePosterUrl, Integer movieID) {
         this.movieTitle = movieTitle;
         this.movieReleaseDate = movieReleaseDate;
         this.movieSynopsis = movieSynopsis;
         this.movieVoteAverage = movieVoteAverage;
         this.moviePosterUrl = moviePosterUrl;
         this.movieID = movieID;
-        this.movieRunTime = movieRunTime;
+        //this.movieRunTime = movieRunTime;
 
     }
 
-    public String getMovieRunTime() {
-        return movieRunTime;
-    }
-
-    public void setMovieRunTime(String movieRunTime) {
-        this.movieRunTime = movieRunTime;
-    }
+//    public String getMovieRunTime() {
+//        return movieRunTime;
+//    }
+//
+//    public void setMovieRunTime(String movieRunTime) {
+//        this.movieRunTime = movieRunTime;
+//    }
 
     public String getMovieTitle() {
         return movieTitle;

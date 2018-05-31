@@ -23,15 +23,16 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        final String SQL_CREATE_MOVIE_TABLE = "CREATE TABLE " + MoviesContract.MoviesEntry.TABLE_NAME + " (" +
+        final String SQL_CREATE_MOVIE_TABLE = "CREATE TABLE IF NOT EXISTS " + MoviesContract.MoviesEntry.TABLE_NAME + " (" +
                 MoviesContract.MoviesEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "+
                 MoviesContract.MoviesEntry.COLUMN_MOVIE_ID + " INTEGER NOT NULL, "+
                 MoviesContract.MoviesEntry.COLUMN_MOVIE_NAME + " TEXT NOT NULL, "+
                 MoviesContract.MoviesEntry.COLUMN_MOVIE_IMAGE + " TEXT, "+
                 MoviesContract.MoviesEntry.COLUMN_MOVIE_OVERVIEW + " TEXT, " +
                 MoviesContract.MoviesEntry.COLUMN_MOVIE_RATE + " INTEGER, "+
-                MoviesContract.MoviesEntry.COLUMN_RELEASE_DATE + " TEXT, " +
-                MoviesContract.MoviesEntry.COLUMN_RUNTIME + " TEXT );";
+                MoviesContract.MoviesEntry.COLUMN_RELEASE_DATE + " TEXT )";
+                //MoviesContract.MoviesEntry.COLUMN_RUNTIME + " TEXT );";
+
         db.execSQL(SQL_CREATE_MOVIE_TABLE);
     }
 
@@ -49,7 +50,7 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
         values.put(MoviesContract.MoviesEntry.COLUMN_MOVIE_OVERVIEW, movie.getMovieSynopsis());
         values.put(MoviesContract.MoviesEntry.COLUMN_MOVIE_RATE, movie.getMovieVoteAverage());
         values.put(MoviesContract.MoviesEntry.COLUMN_RELEASE_DATE, movie.getMovieReleaseDate());
-        values.put(MoviesContract.MoviesEntry.COLUMN_RUNTIME, movie.getMovieRunTime());
+        //values.put(MoviesContract.MoviesEntry.COLUMN_RUNTIME, movie.getMovieRunTime());
 
         context.getContentResolver().insert(MoviesContract.MoviesEntry.CONTENT_URI, values);
     }
@@ -87,7 +88,7 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
             movieOverview = cursor.getString(cursor.getColumnIndex("overview"));
             movieVote = cursor.getDouble(cursor.getColumnIndex("vote"));
             movieId = cursor.getInt(cursor.getColumnIndex("id"));
-            movieRuntime=cursor.getString(cursor.getColumnIndex("runtime"));
+            //movieRuntime=cursor.getString(cursor.getColumnIndex("runtime"));
 
             movie.setMovieTitle(movieTitle);
             movie.setMoviePosterUrl(movieImage);
@@ -95,7 +96,7 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
             movie.setMovieSynopsis(movieOverview);
             movie.setMovieVoteAverage(movieVote);
             movie.setMovieID(movieId);
-            movie.setMovieRunTime(movieRuntime);
+            //movie.setMovieRunTime(movieRuntime);
 
             cursor.moveToNext();
             movies.add(movie);
