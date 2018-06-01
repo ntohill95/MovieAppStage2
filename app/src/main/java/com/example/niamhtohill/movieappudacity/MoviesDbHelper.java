@@ -70,6 +70,7 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
         }
         int numberOfRows = cursor.getCount();
         List<Movie> movies= new ArrayList<>();
+        //initialising so null pointer exception is not thrown
         Movie movie = new Movie("","","",0.0,"",0);
         String movieTitle;
         String movieImage;
@@ -77,7 +78,7 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
         String movieOverview;
         Double movieVote;
         Integer movieId;
-        String movieRuntime;
+        //String movieRuntime;
 
         cursor.moveToFirst();
 
