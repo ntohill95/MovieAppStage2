@@ -70,7 +70,7 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
         }
         int numberOfRows = cursor.getCount();
         List<Movie> movies= new ArrayList<>();
-        Movie movie = null;
+        Movie movie = new Movie("","","",0.0,"",0);
         String movieTitle;
         String movieImage;
         String movieDate;

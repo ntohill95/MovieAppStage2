@@ -13,6 +13,7 @@ import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -62,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             noInternet.setVisibility(View.VISIBLE);
         }
         movieGrid = findViewById(R.id.recycler_view);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 2 );
         movieGrid.setLayoutManager(layoutManager);
         movieGrid.setHasFixedSize(true);
 
@@ -106,9 +107,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                             loadingBar.setVisibility(View.GONE);
                             noInternet = findViewById(R.id.no_connection_tv);
                             noInternet.setVisibility(View.VISIBLE);
-                            //TODO checking if .removeAllViews() compensates for .clear() not working
-                            movieGrid.removeAllViews();
-                            //movieAdapter.clear();
+                            movieAdapter.clear();
                         }
                     }
                     //if the user selects "highest rated" from the menu
@@ -127,17 +126,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                             loadingBar.setVisibility(View.GONE);
                             noInternet = findViewById(R.id.no_connection_tv);
                             noInternet.setVisibility(View.VISIBLE);
-                            //TODO checking if .removeAllViews() compensates for .clear() not working
-                            movieGrid.removeAllViews();
-                            //movieAdapter.clear();
+                            movieAdapter.clear();
                         }
                     }
                     //display favourite movies
                     if(options[which]==favourites){
                         List<Movie> movies = MoviesDbHelper.ShowFavouriteMovies(MainActivity.this);
-                        //TODO checking if .removeAllViews() compensates for .clear() not working
-                        movieGrid.removeAllViews();
-                        //movieAdapter.clear();
+                        movieAdapter.clear();
                         if(movieAdapter != null){
                             movies.addAll(movies);
                             movieAdapter.notifyDataSetChanged();
@@ -173,8 +168,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onLoadFinished(Loader<List<Movie>> loader, List<Movie> movies) {
-        //TODO checking if .removeAllViews() compensates for .clear() not working
-        movieGrid.removeAllViews();
+        movieAdapter.clear();
         View loadingBar = findViewById(R.id.progressBar);
         loadingBar.setVisibility(View.GONE);
         if(position == RecyclerView.NO_POSITION ){
@@ -189,8 +183,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onLoaderReset(Loader<List<Movie>> movies) {
-        //TODO checking if .removeAllViews() compensates for .clear() not working
-        movieGrid.removeAllViews();
-        //movieAdapter.clear();
+        movieAdapter.clear();
     }
 }
